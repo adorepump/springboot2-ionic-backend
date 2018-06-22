@@ -1,5 +1,4 @@
 package com.nelioalves.cursomc.domain;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,48 +18,50 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID=1L;
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private Double preco;
-
-	@ManyToMany
-	@JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-	private List<Categoria> categorias = new ArrayList<Categoria>();
+	private double preco;
+	
+	@JsonIgnore
+	@ManyToMany 
+	@JoinTable(name="PRODUTO_CATEGORIA",
+				joinColumns = @JoinColumn(name="poduto_id"),
+				inverseJoinColumns = @JoinColumn(name="categoria_id")
+			  )
+	private List<Categoria> categorias = new ArrayList<>();//o nome "categorias" ja está definido pelo projecto
 
 	@JsonIgnore
 	@OneToMany(mappedBy="id.produto")
-	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
-
-	public Produto() {
+	public Set<ItemPedido> items = new HashSet<>();
+	
+	public Produto() {  //metodo construtor vazio
 	}
 
-	public Produto(Integer id, String nome, Double preco) {
+	public Produto(Integer id, String nome, double preco) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
-	}	
+	}
 	
 	@JsonIgnore
 	public List<Pedido> getPedidos() {
-		List<Pedido> lista = new ArrayList<Pedido>();
-		for (ItemPedido x: itens) {
+		List<Pedido> lista = new ArrayList<>();
+		for (ItemPedido x : items) {
 			lista.add(x.getPedido());
 		}
-		
 		return lista;
-		
 	}
 
-	public Integer getId() {
+	public Integer getid() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setid(Integer id) {
 		this.id = id;
 	}
 
@@ -72,11 +73,11 @@ public class Produto implements Serializable {
 		this.nome = nome;
 	}
 
-	public Double getPreco() {
+	public double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(Double preco) {
+	public void setPreco(double preco) {
 		this.preco = preco;
 	}
 
@@ -87,14 +88,15 @@ public class Produto implements Serializable {
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
-
-	public Set<ItemPedido> getItens() {
-		return itens;
+	
+	public Set<ItemPedido> getItems() {
+		return items;
 	}
 
-	public void setItens(Set<ItemPedido> itens) {
-		this.itens = itens;
+	public void setItems(Set<ItemPedido> itens) {
+		this.items = itens;
 	}
+
 
 	@Override
 	public int hashCode() {

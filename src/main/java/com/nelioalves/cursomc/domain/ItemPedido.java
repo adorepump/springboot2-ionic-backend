@@ -29,7 +29,7 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 	
-	@JsonIgnore
+	//@JsonIgnore
 	public Produto getProduto() {
 		return this.id.getProduto();
 	}
